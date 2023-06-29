@@ -15,7 +15,8 @@ $connection = ConnectionManager::createConnection([
 $sqlQuery = new Query();
 $sqlQuery->QB()->delete()->from("table");
 $criteria = []; //KeyValue pair
-$sqlQuery = CriteriaHandler::handle($sqlQuery, $criteria, $this->entityResolver->getDataTypes());
+$dataTypes = []; //Optional
+$sqlQuery = CriteriaHandler::handle($sqlQuery, $criteria, $dataTypes);
 
 $sqlQuery->execute();
 
