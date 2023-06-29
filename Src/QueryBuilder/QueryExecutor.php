@@ -2,8 +2,8 @@
 
 namespace Emma\Dbal\QueryBuilder;
 
-use Emma\Connection\ConnectionManager;
 use Emma\Dbal\Connection\PDOConnection;
+use Emma\Dbal\ConnectionManager;
 use Emma\Dbal\QueryBuilder\Constants\FetchMode;
 use Emma\Dbal\QueryBuilder\Constants\QueryType;
 
@@ -32,9 +32,9 @@ class QueryExecutor
     {
         if ($connection == null) {
             $connectionManager = ConnectionManager::getInstance();
-            $connection = $connectionManager->getConnection();
+            $connection = $connectionManager->getConnectionByIndex(0);
             if ($connection == null) {
-                $connection = $connectionManager->createConnectionByModule()->getConnection();
+                throw new \InvalidArgumentException("No Connection  Found!");
             }
         }
         $query = $sqlQuery->getQuery();
