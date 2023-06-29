@@ -1,0 +1,21 @@
+{
+    "name": "emma/dbal",
+    "description": "Emma Database Access Layer. Rely solely on the in-built PHP PDO and FAST. Also, comes with advanced Query Builder for more flexibility and searching and with parameterized queries to prevent against sqli or other sql attacks",
+    "authors": [
+        {
+            "name": "Ademola Aina",
+            "email" : "debascoguy@gmail.com",
+            "homepage": "https://github.com/debascoguy/Emma-Common",
+            "role": "Founder/Lead Software Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Emma\\Dbal\\": "Src/"
+        }
+    },
+    "license": "GPL-3.0-only"
+}
