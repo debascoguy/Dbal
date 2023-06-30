@@ -102,7 +102,17 @@ class Select extends QueryBuilder
         ) {
             $this->setFetchMode(FetchMode::FETCH_UNIQUE);
         }
-        return CriteriaHandler::handle(new Query($this), $criteria, $this->criteriaDataTypes);
+
+        if (!empty($criteria)) {
+            $criteria = $criteria instanceof WhereCompositeCondition ? $criteria : CriteriaHandler::composeCriteria($criteria);
+            $this->where($criteria);
+            $criteria = $criteria->getWhereConditions();
+        }
+        else {
+            $criteria = [];
+        }
+
+        return CriteriaHandler::processWhereCondition(new Query($this), $criteria, $this->criteriaDataTypes);
     }
 
      /**
