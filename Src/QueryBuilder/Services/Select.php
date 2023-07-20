@@ -5,9 +5,6 @@ use Emma\Dbal\QueryBuilder\Constants\FetchMode;
 use Emma\Dbal\QueryBuilder\Constants\QueryType;
 use Emma\Dbal\QueryBuilder\Expressions\WhereCompositeCondition;
 use Emma\Dbal\QueryBuilder\Expressions\WhereCondition;
-use Emma\Dbal\QueryBuilder\Interfaces\NamedParamInterface;
-use Emma\Dbal\QueryBuilder\Interfaces\SearchInterface;
-use Emma\Dbal\QueryBuilder\Interfaces\WhereInterface;
 use Emma\Dbal\QueryBuilder\Query;
 use Emma\Dbal\QueryBuilder\QueryBuilder;
 use Emma\Dbal\QueryBuilder\QueryExecutor;
@@ -89,13 +86,13 @@ class Select extends QueryBuilder
         $sumColumnName = $this->getSumColumnName();
 
         if ($this->isCount()) {
-            $this->select(["count(*)" => "data_result"])
-                ->from($this->getTableName())
-                ->setFetchMode(FetchMode::FETCH_ASSOC);
+            $this->setFetchMode(FetchMode::FETCH_ASSOC)
+                ->select(["count(*)" => "data_result"])
+                ->from($this->getTableName());
         } elseif (!empty($sumColumnName)) {
-            $this->select(["sum($sumColumnName)" => "data_result"])
-                ->from($this->getTableName())
-                ->setFetchMode(FetchMode::FETCH_ASSOC);
+            $this->setFetchMode(FetchMode::FETCH_ASSOC)
+                ->select(["sum($sumColumnName)" => "data_result"])
+                ->from($this->getTableName());
         } else if ($this->getFetchMode() == FetchMode::FETCH_ASSOC
             && count($this->primaryKeyFields) == 1
             && $this->getLimit() != 1

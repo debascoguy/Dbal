@@ -186,13 +186,13 @@ class PDOConnection {
     }
 
     /**
-     * @param $sql
+     * @param string $sql
      * @param array $params
      * @param int $fetchMode
      * @param $fetchClassName
      * @return \PDOStatement|null
      */
-    public function executeQuery($sql, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC, $fetchClassName = null): \PDOStatement|null
+    public function executeQuery(string $sql, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC, $fetchClassName = null): \PDOStatement|null
     {
         if (is_null($fetchClassName)) {
             $fetchMode = \PDO::FETCH_ASSOC;
@@ -206,7 +206,7 @@ class PDOConnection {
                         /** SQL statement template with question mark parameters */
                         $this->connection->prepare($sql) :
                         /** SQL statement template with named parameters */
-                        $this->connection->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
+                        $this->connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
                 $this->statement->execute($params);
             }
             if (!empty($fetchClassName)){
