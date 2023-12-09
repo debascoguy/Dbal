@@ -68,7 +68,7 @@ class QueryBuilderHelper
             QueryType::UPDATE_STATEMENT => $this->updateStatement(),
             QueryType::DELETE_STATEMENT => $this->deleteStatement(),
             QueryType::SELECT_STATEMENT => $this->selectStatement(),
-            default => throw new BaseException("Invalid Query Type For QueryBuilder!"),
+            default => throw new \Exception("Invalid Query Type For QueryBuilder!"),
         };
         
         $query = $this->processStatement($query, $this->QB->getJoins());
