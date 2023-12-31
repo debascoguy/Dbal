@@ -167,12 +167,19 @@ class PDOConnection {
             $dsn
         );
 
-        $this->connection = new \PDO($connectionString, $connectionProperty->getUser(), $connectionProperty->getPassword());
-        // set the PDO error mode to exception
-        $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->connection = new \PDO($connectionString, $connectionProperty->getUser(), $connectionProperty->getPassword(), [
+            //Persistent connections are not closed at the end of the script, 
+            // but are cached and re-used when another script requests a connection using the same credentials. 
+            \PDO::ATTR_PERSISTENT => true,
+            // set the PDO error mode to exception
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ]);
         if ($connectionProperty->getDriver() == Connection\Drivers::MYSQL) {
-            //Setting the connection character set to UTF-8 prior to PHP 5.3.6
-            $this->connection->setAttribute(\PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES utf8');
+            //Setting the connection character set to UTF-8 or any other charset from db.config prior to PHP 5.3.6
+            $this->connection->setAttribute(
+                \PDO::MYSQL_ATTR_INIT_COMMAND, 
+                "SET NAMES {$connectionProperty->getCharset()} COLLATE '{$connectionProperty->getCollation()}' "
+            );
         }
         return $this;
     }

@@ -9,18 +9,15 @@ use Emma\Common\Utils\StringManagement;
 class ConnectionProperty
 {
     private string $host = 'localhost';
-
     private string $user = 'root';
-
     private string $password = '';
-
     private string $dbname = '';
     private int $port = 3306;
     private string $socket = '';
-
+    private string $charset = 'utf8';
+    private string $collation = 'utf8_general_ci';
     private string $driver = Drivers::MYSQL; //There are other fully supported dbms inside the DBMS class...
     private string $dsn = ""; // If connection failed, try specifying the PDO connection string using the 'dsn' field.
-
     private string $schema = ''; //Postgres Users with different schemas
 
 
@@ -60,7 +57,7 @@ class ConnectionProperty
      */
     public static function create(array $connectionDetails): ConnectionProperty
     {
-        return new static(
+        $self = new static(
             $connectionDetails["host"],
             $connectionDetails["user"],
             $connectionDetails["password"],
@@ -70,6 +67,13 @@ class ConnectionProperty
             $connectionDetails["socket"] ?? "",
             $connectionDetails["dsn"] ?? "{dbms}:host={host};port={port};dbname={db}"
         );
+        if (isset($connectionDetails["charset"])) {
+            $self->setCharset($connectionDetails["charset"]);
+        }
+        if (isset($connectionDetails["collation"])) {
+            $self->setCollation($connectionDetails["collation"]);
+        }
+        return $self;
     }
 
     /**
@@ -231,6 +235,34 @@ class ConnectionProperty
     public function setSchema(string $schema): static
     {
         $this->schema = $schema;
+        return $this;
+    }
+
+    public function getCharset()
+    {
+        return $this->charset;
+    }
+
+    /**
+     * @return  self
+     */ 
+    public function setCharset($charset)
+    {
+        $this->charset = $charset;
+        return $this;
+    }
+
+    public function getCollation()
+    {
+        return $this->collation;
+    }
+
+    /**
+     * @return  self
+     */ 
+    public function setCollation($collation)
+    {
+        $this->collation = $collation;
         return $this;
     }
 }
